@@ -1,10 +1,9 @@
 
 from flask import Flask, jsonify
 
-app = Flask(__name__)
+aplicativo = Flask(__name__)
 
-
-@app.route("/")
+@aplicativo.route("/")
 def inicio():
     return jsonify({
         "sistema": "ARTINPACK",
@@ -13,13 +12,11 @@ def inicio():
         "status": "em desenvolvimento"
     })
 
-
-@app.route("/status")
+@aplicativo.route("/status")
 def status():
     return jsonify({
         "mensagem": "ARTINPACK iniciado com sucesso"
     })
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    aplicativo.run(debug=True)
