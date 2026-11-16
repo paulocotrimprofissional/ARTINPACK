@@ -218,3 +218,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Banco de dados local
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Arquivos temporarios do Python
+__pycache__/
+*.pyc
+
+# Ambiente virtual
+.venv/
+venv/

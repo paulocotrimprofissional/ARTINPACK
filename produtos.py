@@ -1,12 +1,10 @@
 
 from decimal import Decimal, InvalidOperation
-
-produtos = []
-proximo_id = 1
+from banco import conectar, inicializar_banco
 
 
 def cadastrar_produto(nome, preco, quantidade):
-    global proximo_id
+    """Cadastra um produto no banco de dados SQLite."""
 
     if not isinstance(nome, str) or not nome.strip():
         raise ValueError("O nome do produto é obrigatório.")
@@ -20,20 +18,44 @@ def cadastrar_produto(nome, preco, quantidade):
         raise ValueError("O preço deve ser válido e não negativo.")
 
     if type(quantidade) is not int or quantidade < 0:
-        raise ValueError("A quantidade deve ser um inteiro não negativo.")
+        raise ValueError(
+            "A quantidade deve ser um inteiro não negativo."
+        )
 
-    produto = {
-        "id": proximo_id,
+    inicializar_banco()
+
+    with conectar() as conexao:
+        cursor = conexao.execute(
+            """
+            INSERT INTO produtos (nome, preco, quantidade)
+            VALUES (?, ?, ?)
+            """,
+            (nome.strip(), str(preco), quantidade)
+        )
+
+        produto_id = cursor.lastrowid
+        conexao.commit()
+
+    return {
+        "id": produto_id,
         "nome": nome.strip(),
         "preco": str(preco),
         "quantidade": quantidade
     }
 
-    produtos.append(produto)
-    proximo_id += 1
-
-    return produto
-
 
 def listar_produtos():
-    return produtos.copy()
+    """Consulta todos os produtos cadastrados."""
+
+    inicializar_banco()
+
+    with conectar() as conexao:
+        registros = conexao.execute(
+            """
+            SELECT id, nome, preco, quantidade
+            FROM produtos
+            ORDER BY id
+            """
+        ).fetchall()
+
+    return [dict(produto) for produto in registros]
