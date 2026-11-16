@@ -56,7 +56,7 @@ Para executar o projeto localmente, é necessário ter o Python instalado.
 Clone o repositório:
 
 ```bash
-git clone https://github.com/paulocotrimprofissional/ARTINPACK.git
+ https://github.com/paulocotrimprofissional/ARTINPACK.git
 ```
 
 Acesse a pasta:
